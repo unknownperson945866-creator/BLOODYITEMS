@@ -1,0 +1,14 @@
+name: BLOODYITEMS
+version: 2.0.0
+main: fun.bloodysmp.bloodyitems.BloodyItems
+api-version: '1.21.11'
+author: BLOODYSMP
+description: Custom resource-pack and content framework for Paper.
+commands:
+  bi:
+    description: BLOODYITEMS main command
+    usage: /bi help
+    permission: bloodyitems.admin
+permissions:
+  bloodyitems.admin:
+    default: op
