@@ -34,15 +34,13 @@ public final class BloodyItems extends JavaPlugin implements Listener {
         }
         try {
             URI.create(url).toURL();
-            String prompt = getConfig().getString("resource-pack.prompt", "Accept the server resource pack.");
             String sha1 = getConfig().getString("resource-pack.sha1", "");
-            if (sha1 == null || sha1.isBlank()) {
-                player.setResourcePack(url, mini.deserialize(prompt), getConfig().getBoolean("resource-pack.required", true));
-            } else {
+            if (sha1 != null && !sha1.isBlank()) {
                 byte[] hash = java.util.HexFormat.of().parseHex(sha1);
                 if (hash.length != 20) throw new IllegalArgumentException("SHA-1 must be 40 hexadecimal characters");
-                player.setResourcePack(url, hash, mini.deserialize(prompt), getConfig().getBoolean("resource-pack.required", true));
             }
+            player.setResourcePack(url, (sha1 == null || sha1.isBlank()) ? null : sha1,
+                    getConfig().getBoolean("resource-pack.required", true));
         } catch (Exception ex) {
             getLogger().warning("Could not send resource pack: " + ex.getMessage());
             if (getConfig().getBoolean("resource-pack.required", true)) player.kick(mini.deserialize(getConfig().getString("resource-pack.failed-kick", "<red>Resource pack error")));
