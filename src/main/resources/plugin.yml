@@ -8,7 +8,6 @@ commands:
   bi:
     description: BLOODYITEMS main command
     usage: /bi help
-    permission: bloodyitems.admin
 permissions:
   bloodyitems.admin:
     default: op
