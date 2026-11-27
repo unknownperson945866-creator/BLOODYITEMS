@@ -1,0 +1,8 @@
+resource-pack:
+  enabled: true
+  required: true
+  url: 'https://example.com/bloodyitems-pack.zip'
+  sha1: ''
+  prompt: '<dark_red><bold>BLOODYITEMS</bold></dark_red><gray> Server resource pack accept karna zaroori hai.'
+  declined-kick: '<red>Resource pack accept karna zaroori hai.'
+  failed-kick: '<red>Resource pack download nahi ho saka. Dobara join karein.'
