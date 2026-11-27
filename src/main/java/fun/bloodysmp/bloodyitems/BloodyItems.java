@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.URI;
-import java.util.UUID;
 
 public final class BloodyItems extends JavaPlugin implements Listener {
     private final MiniMessage mini = MiniMessage.miniMessage();
@@ -37,13 +36,12 @@ public final class BloodyItems extends JavaPlugin implements Listener {
             URI.create(url).toURL();
             String prompt = getConfig().getString("resource-pack.prompt", "Accept the server resource pack.");
             String sha1 = getConfig().getString("resource-pack.sha1", "");
-            UUID id = UUID.randomUUID();
             if (sha1 == null || sha1.isBlank()) {
-                player.setResourcePack(id, url, mini.deserialize(prompt), getConfig().getBoolean("resource-pack.required", true));
+                player.setResourcePack(url, mini.deserialize(prompt), getConfig().getBoolean("resource-pack.required", true));
             } else {
                 byte[] hash = java.util.HexFormat.of().parseHex(sha1);
                 if (hash.length != 20) throw new IllegalArgumentException("SHA-1 must be 40 hexadecimal characters");
-                player.setResourcePack(id, url, hash, mini.deserialize(prompt), getConfig().getBoolean("resource-pack.required", true));
+                player.setResourcePack(url, hash, mini.deserialize(prompt), getConfig().getBoolean("resource-pack.required", true));
             }
         } catch (Exception ex) {
             getLogger().warning("Could not send resource pack: " + ex.getMessage());
