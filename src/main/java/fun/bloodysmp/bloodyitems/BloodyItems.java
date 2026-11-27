@@ -4,6 +4,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,12 +15,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.URI;
 
-public final class BloodyItems extends JavaPlugin implements Listener {
+public final class BloodyItems extends JavaPlugin implements Listener, TabCompleter {
     private final MiniMessage mini = MiniMessage.miniMessage();
 
     @Override public void onEnable() {
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(this, this);
+        if (getCommand("bi") != null) {
+            getCommand("bi").setExecutor(this);
+            getCommand("bi").setTabCompleter(this);
+        }
         getLogger().info("BLOODYITEMS 2.0.0 enabled.");
     }
 
@@ -54,6 +60,17 @@ public final class BloodyItems extends JavaPlugin implements Listener {
             case FAILED_DOWNLOAD, INVALID_URL -> event.getPlayer().kick(mini.deserialize(getConfig().getString("resource-pack.failed-kick", "<red>Resource pack download failed")));
             default -> { }
         }
+    }
+
+    @Override public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length == 1) {
+            String prefix = args[0].toLowerCase();
+            return java.util.stream.Stream.of("help", "status", "reload")
+                    .filter(value -> value.startsWith(prefix))
+                    .filter(value -> !value.equals("reload") || sender.hasPermission("bloodyitems.admin"))
+                    .toList();
+        }
+        return List.of();
     }
 
     @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
